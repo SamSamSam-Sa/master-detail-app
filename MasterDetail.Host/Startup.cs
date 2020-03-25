@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MasterDetailApplication
+namespace MasterDetail.Host
 {
     public class Startup
     {

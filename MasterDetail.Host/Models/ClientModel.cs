@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MasterDetailApplication.Models
+namespace MasterDetail.Host.Models
 {
     public class ClientModel
     {
