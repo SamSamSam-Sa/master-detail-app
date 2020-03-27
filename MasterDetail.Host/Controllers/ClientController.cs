@@ -1,89 +1,67 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MasterDetail.DBRepository;
+using MasterDetail.DBRepository.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MasterDetail.Host.Controllers
 {
+    [ApiController]
+    [Route("ClientController")]
     public class ClientController : Controller
     {
-        // GET: Client
-        public ActionResult Index()
+        private MasterDetailContext masterDetailContext;
+
+        [HttpGet]
+        public IEnumerable<Client> GetAllClientsInfo()
         {
-            return View();
+            var smth = masterDetailContext.Clients.Include(x => x.Orders).ToList();
+            return smth;
         }
 
-        // GET: Client/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Client/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Client/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public string PostClientInfo(Client client)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            masterDetailContext.Clients.Add(client);
+            masterDetailContext.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return String.Format("Клиент '{0}' добавлен!", client.Id);
         }
 
-        // GET: Client/Edit/5
-        public ActionResult Edit(int id)
+        [HttpPut]
+        public string PutClientInfo(Client client)
         {
-            return View();
+            masterDetailContext.Clients.Update(client);
+            masterDetailContext.SaveChanges();
+
+            return String.Format("Клиент '{0}' обновлён!", client.Id);
         }
 
-        // POST: Client/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpDelete]
+        public string DeleteClientInfo(int id)
         {
-            try
+            var client = masterDetailContext.Clients.Include(x => x.Orders).SingleOrDefault(x => x.Id == id);
+            if (client != null)
             {
-                // TODO: Add update logic here
+                var clientOrders = client.Orders;
+                if (client != null)
+                {
+                    masterDetailContext.Orders.RemoveRange(clientOrders);
 
-                return RedirectToAction(nameof(Index));
+                }
+                masterDetailContext.Clients.Remove(client);
+                masterDetailContext.SaveChanges();
+
             }
-            catch
-            {
-                return View();
-            }
+
+            return String.Format("Клиент '{0}' удалён!", id);
         }
 
-        // GET: Client/Delete/5
-        public ActionResult Delete(int id)
+        public ClientController(MasterDetailContext masterDetailContext)
         {
-            return View();
-        }
-
-        // POST: Client/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            this.masterDetailContext = masterDetailContext;
         }
     }
 }
