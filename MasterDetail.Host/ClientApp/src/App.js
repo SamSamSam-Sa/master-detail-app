@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   getClients = () => {
-    return get("https://localhost:44394/ClientController").then(
+    return get("/ClientController").then(
       res => {
         console.log(res);
         this.setState({
@@ -77,7 +77,7 @@ class App extends React.Component {
   performClientSubmissionRequest = (clientData, id) => {
     let params = JSON.stringify(clientData);
     if (id) {
-      return put("https://localhost:44394/ClientController", params).then(
+      return put("/ClientController", params).then(
         function(res) {
           console.log(res);
         },
@@ -86,7 +86,7 @@ class App extends React.Component {
         }
       );
     } else {
-      return post("https://localhost:44394/ClientController", params).then(
+      return post("/ClientController", params).then(
         function(res) {},
         function(error) {
           console.log(error);
@@ -107,7 +107,7 @@ class App extends React.Component {
     let params = JSON.stringify(orderData);
     let clientId = this.state.selectedClientCardId;
     if (id) {
-      return put("https://localhost:44394/OrderController", params).then(
+      return put("/OrderController", params).then(
         function(res) {
           console.log(res);
         },
@@ -117,7 +117,7 @@ class App extends React.Component {
       );
     } else {
       return post(
-        `https://localhost:44394/OrderController?clientId=${clientId}`,
+        `/OrderController?clientId=${clientId}`,
         params
       ).then(
         function(res) {
@@ -144,7 +144,7 @@ class App extends React.Component {
 
   deleteClient = id => {
     let scope = this;
-    remove(`https://localhost:44394/ClientController/${id}`).then(
+    remove(`/ClientController/${id}`).then(
       function(res) {
         console.log(res);
         scope.getClients();
@@ -157,7 +157,7 @@ class App extends React.Component {
 
     deleteOrder = id => {
         let scope = this;
-        remove(`https://localhost:44394/OrderController/${id}`).then(
+        remove(`/OrderController/${id}`).then(
             function (res) {
                 console.log(res);
                 scope.getClients().then(() => {
