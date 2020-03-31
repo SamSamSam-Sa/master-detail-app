@@ -39,7 +39,7 @@ namespace MasterDetail.Host.Controllers
             return String.Format("Клиент '{0}' обновлён!", client.Id);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public string DeleteClientInfo(int id)
         {
             var client = masterDetailContext.Clients.Include(x => x.Orders).SingleOrDefault(x => x.Id == id);

@@ -14,17 +14,6 @@ namespace MasterDetail.Host.Controllers
     {
         private MasterDetailContext masterDetailContext;
 
-        [HttpGet("{id}")]
-        public IEnumerable<Order> GetClientOrdersInfo(int id)
-        {
-            var client = masterDetailContext.Clients.Include(x => x.Orders).SingleOrDefault(x => x.Id == id);
-            //var orderds = masterDetailContext.Orders.Select(x => x);
-            if (client != null)
-            {
-                return client.Orders.ToList();
-            }
-            throw new Exception("Клиента не существует!");
-        }
 
         [HttpPost]
         public string PostOrderInfo(Order order, int clientId)
@@ -46,7 +35,7 @@ namespace MasterDetail.Host.Controllers
             return String.Format("Заказ '{0}' обновлён!", order.Id);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public string DeleteOrderInfo(int id)
         {
             var order = masterDetailContext.Orders.FirstOrDefault(x => x.Id == id);
