@@ -1,38 +1,193 @@
-.App {
-  text-align: center;
+:root{
+  --orange-white: #fffaf7;
+  --light-orange: #ffeddf;
+  --dark-gray: #474747;
+  --orange: #d07f3e;
+  --orange-transparent: #d0803e8a;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  overflow:  hidden;
+  margin: 0;
+  padding: 0;
+  background: var(--light-orange);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.add-icon{
+  align-self: center !important;
+  position: absolute;
+  bottom: 20px;
+  font-size: 1.7em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app-container{
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+.app-content-container{
+  display: flex;
+  flex-direction: row;
+  height:100%
+}
+
+.app-clients-column{
+  flex: 33%;
+  margin: 5px;
+}
+
+.app-orders-column{
+  flex: 77%;
+  margin: 5px;
+  box-shadow: -1px 3px 5px var(--orange), 0 3px 5px var(--orange);
+}
+
+.birth-date-icon, .phone-icon{
+  display: flex;
+  align-items: center;
+}
+
+.client-card-container{
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 2px;
+  padding: 5px 0px;
+  border-bottom: 1.5px solid var(--orange-white);
+}
+
+.client-card-container:first-child{
+  border-top: 1.5px solid var(--orange-white);
+}
+
+.client-card-container-selected{
+  background-color: var(--orange-transparent);
+}
+
+.client-card-extra-information{
+  display: none;
+  width: 100%;
+  justify-content: space-around;
+  font-size: 0.8em;
+  padding: 7px;
+}
+
+.client-card-extra-information-show{
+  display: flex;
+}
+
+.client-card-header, .order-card-header, .client-create-ontainer-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding-bottom: 3px;
+}
+
+.client-card-id, .order-card-id{
+  padding: 5px;
+}
+
+.client-card-name {
+  font-size: 1.5em;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.client-create-container {
+  display: flex;
+  align-self: center;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: column;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  position: relative;
+  font-family: 'Assistant', sans-serif;
+  width: 400px;
+  height: 500px;
 }
 
-.App-link {
-  color: #61dafb;
+.client-create-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.client-create-form >* {
+  padding-top: 20px;
+}
+
+.client-list-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.material-icons {
+  font-size: 1.7em !important;
+  height: 5px;
+  width: auto;
+}
+
+.action:hover{
+  background-color: var(--orange-transparent);
+  border-radius: 5px;
+}
+
+.nav-container {
+  height: 60px;
+  background-color: var(--dark-gray);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  padding: 10px 40px;
+  font-family: 'Assistant', sans-serif;
+  letter-spacing: 0.6px;
+  color: var(--light-orange);
+  text-align: center;
+  width: 100%;
+}
+
+.order-card-container{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  position: relative;
+  width: 150px;
+  height: 100px;
+  background: var(--orange-white);
+  box-shadow: 0 1px 3px var(--orange-transparent), 0 1px 2px var(--orange-transparent);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-radius: 4px;
+}
+
+.order-card-container:hover {
+  box-shadow: 0 10px 20px var(--orange-transparent), 0 6px 6px var(--orange-transparent);
+  /* margin-top: 30px;
+  margin-bottom: 50px; */
+}
+
+.order-list-container{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: auto;
+  padding: 20px;
+}
+
+.order-card-price {
+  font-size: 2em;
+  padding: 10px;
 }
