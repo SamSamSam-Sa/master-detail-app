@@ -18,7 +18,8 @@ class ClientCreate extends React.Component{
 	}
    onSubmit(e) {
       e.preventDefault();
-         const clientFormData = {
+	   const clientFormData = {
+				id: this.props.client.id,
 				name: this.state.name,
 				surname: this.state.surname,
 				patronymic: this.state.patronymic,

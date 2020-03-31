@@ -1,141 +1,198 @@
-import React from 'react';
-import './App.css';
-import Nav from './components/Nav.js';
-import ClientsList from './components/ClientsList.js';
-import OrdersList from './components/OrdersList.js';
-import ClientCreate from './components/ClientCreate';
-import OrderCreate from './components/OrderCreate';
+import React from "react";
+import "./App.css";
+import Nav from "./components/Nav.js";
+import ClientsList from "./components/ClientsList.js";
+import OrdersList from "./components/OrdersList.js";
+import ClientCreate from "./components/ClientCreate";
+import OrderCreate from "./components/OrderCreate";
+import { get, post, put, remove } from "./HttpService.js";
 
 class App extends React.Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       showClientCreate: false,
       showOrderCreate: false,
-      clients: this.getClients(),
+      clients: [],
       client: {},
       selectedClientCardId: null,
       orders: [],
       order: {}
     };
-
+    this.getClients();
   }
 
-  getClients = () =>{
-    return [
-      {id:"1", name: "rtgrtgrg", surname:"dgdrgre", patronymic:"gergr", dateOfBirth: "2017-05-24", phoneNumber: "fgbgbrt", orders:[{id:"1", price: "bla"}, {id:"2", price: "ititi"}]},
-      {id:"2", name: "rtgrtg", surname:"dgdrggergergre", patronymic:"gekkiuyrgr", dateOfBirth: "2017-05-24", phoneNumber: "nybtr", orders: [{id:"3", price: "uyt"}, {id:"4", price: "rgergerg"}]}
-    ];
-  }
+  getClients = () => {
+    return get("https://localhost:44394/ClientController").then(
+      res => {
+        console.log(res);
+        this.setState({
+          clients: JSON.parse(res)
+        });
+      },
+      function(error) {
+        console.log("Error!!!");
+        console.log(error);
+      }
+    );
+  };
 
   toggleClientCreate = () => {
     this.setState({
       showClientCreate: !this.state.showClientCreate,
       client: {}
     });
-  }
+  };
 
   toggleOrderCreate = () => {
     this.setState({
       showOrderCreate: !this.state.showOrderCreate,
       order: {}
     });
-  }
+  };
 
-  editClient = (id) => {
-    let currentClient =  this.state.clients.find(client => client.id === id);
+  editClient = id => {
+    let currentClient = this.state.clients.find(client => client.id === id);
     this.setState({ client: currentClient, showClientCreate: true });
-  }
+  };
 
-  editOrder = (id) => {
-    let currentOrder =  this.state.orders.find(order => order.id === id);
+  editOrder = id => {
+    let currentOrder = this.state.orders.find(order => order.id === id);
     this.setState({ order: currentOrder, showOrderCreate: true });
-  }
+  };
 
-  getClientOrders = (clientId) => {
-    this.setState({orders: this.state.clients.find(client => client.id === clientId).orders});
-  }
+  getClientOrders = clientId => {
+    this.setState({
+      orders: this.state.clients.find(client => client.id === clientId).orders
+    });
+  };
 
-  selectClientCard = (clientId) => {
-    this.setState({ 
-      selectedClientCardId: clientId });
+  selectClientCard = clientId => {
+    this.setState({
+      selectedClientCardId: clientId
+    });
     this.getClientOrders(clientId);
-  }
-  
+  };
+
   performClientSubmissionRequest = (clientData, id) => {
+    let params = JSON.stringify(clientData);
     if (id) {
-      let clientsArr = this.state.clients;
-      let newClientsArr = clientsArr.splice((clientsArr.findIndex(client => client.id === id)), 0, clientData);
-      this.setState({
-        clients: newClientsArr
-      });
+      return put("https://localhost:44394/ClientController", params).then(
+        function(res) {
+          console.log(res);
+        },
+        function(error) {
+          console.log(error);
+        }
+      );
     } else {
-        let clientsArr = this.state.clients;
-        clientData.id = clientsArr.length + 1;
-        clientData.orders=[];
-        clientsArr.push(clientData);
-        this.setState({
-          clients: clientsArr
-        });
+      return post("https://localhost:44394/ClientController", params).then(
+        function(res) {},
+        function(error) {
+          console.log(error);
+        }
+      );
     }
-  }
+  };
 
   submitClient = (clientData, id) => {
-    this.performClientSubmissionRequest(clientData, id);
-    this.setState({ showClientCreate: false });
-  }
+    let scope = this;
+    this.performClientSubmissionRequest(clientData, id).then(() => {
+      scope.getClients();
+      this.setState({ showClientCreate: false });
+    });
+  };
 
   performOrderSubmissionRequest = (orderData, id) => {
+    let params = JSON.stringify(orderData);
+    let clientId = this.state.selectedClientCardId;
     if (id) {
-      let ordersArr = this.state.orders;
-      alert("");
-      let newOrdersArr = ordersArr.splice((ordersArr.findIndex(order => order.id === id)), 2, orderData);
-      this.setState({
-        orders: newOrdersArr
-      });
+      return put("https://localhost:44394/OrderController", params).then(
+        function(res) {
+          console.log(res);
+        },
+        function(error) {
+          console.log(error);
+        }
+      );
     } else {
-        let ordersArr = this.state.orders;
-        orderData.id = ordersArr.length + 1;
-        ordersArr.push(orderData);
-        this.setState({
-          orders: ordersArr
-        });
+      return post(
+        `https://localhost:44394/OrderController?clientId=${clientId}`,
+        params
+      ).then(
+        function(res) {
+          console.log(res);
+        },
+        function(error) {
+          console.log(error);
+        }
+      );
     }
-  }
+  };
 
   submitOrder = (orderData, id) => {
-    this.performOrderSubmissionRequest(orderData, id);
-    this.setState({ showOrderCreate: false });
-  }
+    let scope = this;
+    this.performOrderSubmissionRequest(orderData, id).then(() => {
+      scope.getClients().then(() => {
+        scope.getClientOrders(scope.state.selectedClientCardId);
+        scope.setState({
+          showOrderCreate: false
+        });
+      });
+    });
+  };
 
-  deleteOrder = (id) => {
-    const newOrdersState = this.state.orders.filter((order) => order.id !== id);
-    this.setState({ orders: newOrdersState });
-  }
+  deleteClient = id => {
+    let scope = this;
+    remove(`https://localhost:44394/ClientController/${id}`).then(
+      function(res) {
+        console.log(res);
+        scope.getClients();
+      },
+      function(error) {
+        console.log(error);
+      }
+    );
+  };
 
-  render(){
+    deleteOrder = id => {
+        let scope = this;
+        remove(`https://localhost:44394/OrderController/${id}`).then(
+            function (res) {
+                console.log(res);
+                scope.getClients().then(() => {
+                    scope.getClientOrders(scope.state.selectedClientCardId);
+                });
+            },
+            function (error) {
+                console.log(error);
+            }
+        );
+  };
+
+  render() {
     return (
       <div className="app-container">
         <Nav />
-        {
-          (this.state.showClientCreate || this.state.showOrderCreate) ?
-          (
-            this.state.showClientCreate ?
-            <ClientCreate 
+        {this.state.showClientCreate || this.state.showOrderCreate ? (
+          this.state.showClientCreate ? (
+            <ClientCreate
               client={this.state.client}
               toggleClientCreate={this.toggleClientCreate}
               submitClient={this.submitClient}
             />
-            :
-            <OrderCreate 
+          ) : (
+            <OrderCreate
               order={this.state.order}
               toggleOrderCreate={this.toggleOrderCreate}
               submitOrder={this.submitOrder}
             />
-          ) :
+          )
+        ) : (
           <div className="app-content-container">
             <div className="app-clients-column">
-              <ClientsList 
+              <ClientsList
+                deleteClient={this.deleteClient}
                 editClient={this.editClient}
                 clients={this.state.clients}
                 selectCard={this.selectClientCard}
@@ -152,9 +209,9 @@ class App extends React.Component {
               />
             </div>
           </div>
-        }
+        )}
       </div>
-    );  
+    );
   }
 }
 

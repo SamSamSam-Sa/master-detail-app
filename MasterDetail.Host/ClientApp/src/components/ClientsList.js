@@ -5,19 +5,19 @@ import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 class ClientList extends React.Component {
 
 	render() {
-		const {clients, editClient, selectCard, selectedClientCardId, toggleClientCreate/*, getClient, deleteCient*/ } = this.props;
+		const {clients, editClient, selectCard, selectedClientCardId, toggleClientCreate, deleteClient } = this.props;
 		const cards = clients.map((client, index) => {
 			return (
 				<ClientCard className="client-card"
-					onClick={() => {selectCard(client.id)
-					}} 
+					onClick={() => {
+						selectCard(client.id)
+					}}
 					key={index}
 					index={index}
 					selected={selectedClientCardId === client.id}
 					client={client}
-					editClient = {editClient}
-				//    getClient = {getClient}
-				//    deleteClient = {deleteCient}
+					editClient={editClient}
+					deleteClient={deleteClient}
 				/>
 			);
 		});

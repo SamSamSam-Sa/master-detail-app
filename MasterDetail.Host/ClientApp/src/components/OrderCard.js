@@ -20,8 +20,8 @@ class OrderCard extends React.Component{
                   </span>
                </div>
             </div>
-            <div className="order-card-price">
-               {order.price}
+            <div className="order-card-sum">
+               {order.sum}
             </div>
          </div>
       );

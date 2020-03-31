@@ -8,7 +8,7 @@ import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 class ClientCard extends React.Component {
 
 	render() {
-		const { client, onClick, selected, editClient/*, getClient, deleteClient*/ } = this.props;
+		const { client, onClick, selected, editClient, deleteClient } = this.props;
 
 		return (
 			<div onClick={onClick} className={selected ? "client-card-container client-card-container-selected" : "client-card-container"}>
@@ -20,7 +20,7 @@ class ClientCard extends React.Component {
 						<span className="edit-icon" onClick={() => editClient(client.id)}>
 							<EditRoundedIcon className="material-icons action" />
 						</span>
-						<span className="delete-icon" /*onClick={() => deleteClient(client.id)}*/>
+						<span className="delete-icon" onClick={() => deleteClient(client.id)}>
 							<DeleteForeverRoundedIcon className="material-icons action"/>
 						</span>
 					</div>

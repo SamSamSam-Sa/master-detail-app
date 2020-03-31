@@ -9,14 +9,15 @@ class OrderCreate extends React.Component{
 		super(props);
 		const { order } = this.props;
 		this.state = {
-			price: order.price
+			sum: order.sum
 		}
 	}
 
 	onSubmit(e) {
       e.preventDefault();
-         const orderFormData = {
-            price: this.state.price,
+		const orderFormData = {
+			id: this.props.order.id ? this.props.order.id : 0,
+            sum: +this.state.sum,
          };
       this.props.submitOrder(orderFormData, this.props.order.id);
 	}
@@ -36,10 +37,10 @@ class OrderCreate extends React.Component{
 			 	<form className="order-create-form" onSubmit={(e) => this.onSubmit(e)} >
 					<TextField 
 						id="standard-basic"
-						label="Order price"
-						className="order-create-price-input"
-						value={this.state.price}
-						onChange={(e) => this.setState({price: e.target.value})}
+						label="Order sum"
+						className="order-create-sum-input"
+						value={this.state.sum}
+						onChange={(e) => this.setState({sum: e.target.value})}
 					/>
 					<IconButton
 						aria-label="delete"
