@@ -4,7 +4,7 @@ import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 
 class OrderCard extends React.Component{
    render(){
-      const { order, getOrder, deleteOrder} = this.props;
+      const { order, editOrder, deleteOrder} = this.props;
       return(
          <div className="order-card-container">
             <div className="order-card-header">
@@ -12,7 +12,7 @@ class OrderCard extends React.Component{
                   № {order.id}
                </div>
                <div className="order-tool-bar">
-                  <span className="edit-icon" onClick={() => getOrder(order.id)}>
+                  <span className="edit-icon" onClick={() => editOrder(order.id)}>
                      <EditRoundedIcon className="material-icons action"/>
                   </span>
                   <span className="delete-icon" onClick={() => deleteOrder(order.id)}>

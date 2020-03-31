@@ -3,19 +3,16 @@ import OrderCard from './OrderCard'
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 
 class OrderList extends React.Component{
-	    // componentWillMount() {
-    //     this.props.getOrders();
-    // }
 
    render(){
-      const {orders, getOrder, deleteOrder} = this.props;
+      const {orders, editOrder, deleteOrder, toggleOrderCreate} = this.props;
       const cards = orders.map((order, index) => {
          return(
             <OrderCard
                key = {index}
                index = {index}
                order = {order}
-               getOrder = {getOrder}
+               editOrder = {editOrder}
                deleteOrder = {deleteOrder}
             />
          );
@@ -24,7 +21,7 @@ class OrderList extends React.Component{
       return (
          <div className="order-list-container">
             {cards}
-            <span className="add-icon">
+            <span className="add-icon" onClick={() => toggleOrderCreate()}>
 				<AddCircleRoundedIcon className="material-icons action" />
 			</span>
          </div>

@@ -1,32 +1,40 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded'
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded'
 
 class ClientCreate extends React.Component{
+	constructor(props){
+		super(props);
+		const { client } = this.props;
+		this.state = {
+			name: client.name,
+			surname: client.surname,
+			patronymic: client.patronymic,
+			dateOfBirth: client.dateOfBirth,
+			phoneNumber: client.phoneNumber
+		}
+	}
    onSubmit(e) {
       e.preventDefault();
          const clientFormData = {
-				name: this.name.value,
-				surname: this.surname.value,
-				patronymic: this.patronymic.value,
-				dateOfBirth: this.dateOfBirth.value,
-				phoneNumber: this.phoneNumber.value,
+				name: this.state.name,
+				surname: this.state.surname,
+				patronymic: this.state.patronymic,
+				dateOfBirth: this.state.dateOfBirth,
+				phoneNumber: this.state.phoneNumber,
          };
       this.props.submitClient(clientFormData, this.props.client.id);
 	}
 	
 	render() {
-		const { client, toggleClientCreate } = this.props;
+		const { toggleClientCreate } = this.props;
 		return(
 		  	<div className="client-create-container">
-				<div className="client-create-ontainer-header">
+				<div className="client-create-container-header">
 					<h2>Client data</h2>
 					<div className="client-create-tool-bar">
-						<span className="save-icon" /*onClick={() => toggleClientCreate()}*/>
-							<SaveRoundedIcon className="material-icons action" />
-						</span>
 						<span className="close-icon" onClick={() => toggleClientCreate()}>
 							<CloseRoundedIcon className="material-icons action"/>
 						</span>
@@ -34,47 +42,53 @@ class ClientCreate extends React.Component{
 				</div>
 			 	<form className="client-create-form" onSubmit={(e) => this.onSubmit(e)} >
 					<TextField 
-						id="standard-basic" label="Standard"
+						id="standard-basic"
+						label="Name"
 						className="client-create-name-input"
-						defaultValue={client.name}
-						ref={(TextField) => this.name = TextField}
+						value={this.state.name}
+						onChange={(e) => this.setState({name: e.target.value})}
 					/>
 					<TextField 
-						id="standard-basic" label="Standard"
+						id="standard-basic"
+						label="Surname"
 						className="client-create-surname-input"
-						defaultValue={client.surname}
-						ref={(TextField) => this.surname = TextField}
+						value={this.state.surname}
+						onChange={(e) => this.setState({surname: e.target.value})}
 					/>
 					<TextField 
-						id="standard-basic" label="Standard"
+						id="standard-basic" label="Patronymic"
 						className="client-create-patronymic-input"
-						defaultValue={client.patronymic}
-						ref={(TextField) => this.patronymic = TextField}
+						value={this.state.patronymic}
+						onChange={(e) => this.setState({patronymic: e.target.value})}
 					/>						  
 					<TextField
 						id="date"
 						label="Birthday"
 						type="date"
-						defaultValue={client.dateOfBirth}
 						className="client-create-dateOfBirth-input"
 						InputLabelProps={{
 							shrink: true,
 						}}
-						ref={(TextField) => this.dateOfBirth = TextField}
+						value={this.state.dateOfBirth}
+						onChange={(e) => this.setState({dateOfBirth: e.target.value})}
 					/>
 					<TextField 
-						id="standard-basic" label="Standard"
+						id="standard-basic"
+						label="Phone number"
 						className="client-create-phoneNumber-input"
-						defaultValue={client.phoneNumber}
-						ref={(TextField) => this.phoneNumber = TextField}
+						value={this.state.phoneNumber}
+						onChange={(e) => this.setState({phoneNumber: e.target.value})}
 					/>
-					<Button
+					<IconButton
+						aria-label="delete"
 						className="client-edit-button"
 						variant="contained"
 						type="submit"
 						label="Submit">
-						Save
-					</Button>
+						<span className="save-icon">
+							<SaveRoundedIcon className="material-icons action" />
+						</span>
+					</IconButton>
 			 	</form>
 		  </div>
 		);
