@@ -13,7 +13,7 @@ class ClientCreate extends React.Component{
 			surname: client.surname,
 			patronymic: client.patronymic,
 			dateOfBirth: client.dateOfBirth,
-			phoneNumber: client.phoneNumber
+			phone: client.phone
 		}
 	}
    onSubmit(e) {
@@ -24,11 +24,15 @@ class ClientCreate extends React.Component{
 				surname: this.state.surname,
 				patronymic: this.state.patronymic,
 				dateOfBirth: this.state.dateOfBirth,
-				phoneNumber: this.state.phoneNumber,
+				phone: this.state.phone,
          };
       this.props.submitClient(clientFormData, this.props.client.id);
 	}
-	
+
+	formatDate = (fullDateString) => {
+		return fullDateString.slice(0,10);
+	}
+
 	render() {
 		const { toggleClientCreate } = this.props;
 		return(
@@ -70,15 +74,15 @@ class ClientCreate extends React.Component{
 						InputLabelProps={{
 							shrink: true,
 						}}
-						value={this.state.dateOfBirth}
+						value={this.state.dateOfBirth ? this.formatDate(this.state.dateOfBirth) : this.state.dateOfBirth}
 						onChange={(e) => this.setState({dateOfBirth: e.target.value})}
 					/>
 					<TextField 
 						id="standard-basic"
 						label="Phone number"
-						className="client-create-phoneNumber-input"
-						value={this.state.phoneNumber}
-						onChange={(e) => this.setState({phoneNumber: e.target.value})}
+						className="client-create-phone-input"
+						value={this.state.phone}
+						onChange={(e) => this.setState({phone: e.target.value})}
 					/>
 					<IconButton
 						aria-label="delete"

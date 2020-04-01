@@ -87,7 +87,9 @@ class App extends React.Component {
       );
     } else {
       return post("/ClientController", params).then(
-        function(res) {},
+        function(res) {
+
+        },
         function(error) {
           console.log(error);
         }
@@ -97,9 +99,14 @@ class App extends React.Component {
 
   submitClient = (clientData, id) => {
     let scope = this;
-    this.performClientSubmissionRequest(clientData, id).then(() => {
-      scope.getClients();
-      this.setState({ showClientCreate: false });
+    this.performClientSubmissionRequest(clientData, id)
+    .then(() => {
+      scope.getClients()
+      .then(() => {
+        scope.setState({
+          showClientCreate: false
+        });
+      });
     });
   };
 
